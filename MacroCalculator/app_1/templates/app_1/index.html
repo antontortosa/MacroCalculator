@@ -1,0 +1,10 @@
+
+{% if all_users %}
+    <ul>
+    {% for user in all_users %}
+        <li><a href="{% url 'app_1:reg_user' user.id %}">{{ user.first_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No users are available.</p>
+{% endif %}
