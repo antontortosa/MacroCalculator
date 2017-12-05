@@ -6,10 +6,10 @@ from . import views
 app_name = 'app_1'
 
 urlpatterns = [
-    # ex: /reg_user/
-    url(r'^reg_user/$', views.index, name='index'),
-    # ex: /reg_user/5/
-    url(r'^reg_user/(?P<user_id>[0-9]+)/$', views.reg_user, name='reg_user'),
-    # ex: /reg_user/5/history/
-    url(r'^reg_user/(?P<user_id>[0-9]+)/history/$', views.history, name='history'),
+    # ex: /profile/
+    url(r'^profile/$', views.index, name='index'),
+    # ex: /profile/5/
+    url(r'^profile/(?P<user_id>[0-9]+)/$', views.profile, name='profile'),
+    # ex: /profile/5/history/
+    url(r'^profile/(?P<user_id>[0-9]+)/history/$', views.history, name='history'),
 ]		
