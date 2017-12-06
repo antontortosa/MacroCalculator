@@ -32,20 +32,20 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Items(models.Model):
-    calories = models.FloatField()
-    tot_fat = models.FloatField()
-    tot_protein = models.FloatField()
-    sugar = models.FloatField()
-    tot_carbs = models.FloatField()
-    fat_saturated = models.FloatField()
-    fiber = models.FloatField()
-    sodium = models.FloatField()
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique="true")
+    calories = models.FloatField(default=0.0)
+    tot_fat = models.FloatField(default=0.0)
+    tot_protein = models.FloatField(default=0.0)
+    sugar = models.FloatField(default=0.0)
+    tot_carbs = models.FloatField(default=0.0)
+    fat_saturated = models.FloatField(default=0.0)
+    fiber = models.FloatField(default=0.0)
+    sodium = models.FloatField(default=0.0)
 
 
 class Histories(models.Model):
     usuario = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Items, on_delete=models.CASCADE)
     date_consumed = models.DateField()
 
 
@@ -58,7 +58,7 @@ class Objectives(models.Model):
 
 
 class Ingredients(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Items, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     amount = models.CharField(max_length = 15)
 
