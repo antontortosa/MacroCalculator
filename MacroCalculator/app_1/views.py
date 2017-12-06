@@ -10,7 +10,7 @@ def index(request):
     return render(request, 'app_1/index.html', context)
 
 
-def Profile(request, user_id):
+def profile(request, user_id):
     user = get_object_or_404(Profile, pk=user_id)
     return render(request, 'app_1/user_prof.html',{'user':user})
 

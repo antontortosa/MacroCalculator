@@ -105,3 +105,4 @@ venv.bak/
 
 #Movidas del IDE
 MacroCalculator/.idea/
+MacroCalculator/__init__.py
