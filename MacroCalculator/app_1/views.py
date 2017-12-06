@@ -3,7 +3,7 @@ from nutritionix import Nutritionix
 # Create your views here.
 from django.http import HttpResponse,HttpResponseRedirect
 from django.utils import timezone
-from .models import Reg_Users, ItemForm, Ingredients, Items, Histories
+from .models import Profile, ItemForm, Ingredients, Items, Histories
 from .forms import IngredientsForm
 import requests
 import json
@@ -11,13 +11,13 @@ import json
 
 
 def index(request):
-    all_users = Reg_Users.objects.all()
+    all_users = Profile.objects.all()
     context = {'all_users': all_users}
     return render(request, 'app_1/index.html', context)
 
 
-def reg_user(request, user_id):
-    user = get_object_or_404(Reg_Users, pk=user_id)
+def profile(request, user_id):
+    user = get_object_or_404(Profile, pk=user_id)
     return render(request, 'app_1/user_prof.html', {'user': user})
 
 
@@ -38,7 +38,7 @@ def add_ingredient(request, user_id, item_id):
 		form = IngredientsForm(request.POST) #Bound form
 		if form.is_valid():
 		
-			user = Reg_Users.objects.get(pk=user_id)
+			user = Profile.objects.get(pk=user_id)
 			prev_item = Items.objects.get(pk=item_id)
 			calories_acum = prev_item.calories
 			fat_acum = prev_item.tot_fat
@@ -235,13 +235,12 @@ def add_ingredient(request, user_id, item_id):
 
 			history_entry = Histories(usuario=user, item=prev_item, date_consumed=timezone.now())
 			history_entry.save()
-			return HttpResponseRedirect("/app_1/reg_user/"+user_id+"/history")
+			return HttpResponseRedirect("/app_1/profile/"+user_id+"/history")
 
 	else:
 		form = IngredientsForm() # Unbound form
 
 	return render(request, 'app_1/ingredients_form.html', {'form': form, 'user_id':user_id,'item_id':item_id })
-
 
 
 def history(request, user_id):
