@@ -7,6 +7,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
     # "usuario django" con el que se asocia -> https://docs.djangoproject.com/en/1.11/ref/contrib/auth/#fields
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # añadir campos no presentes en User
     date_birth = models.DateField()
     country = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
