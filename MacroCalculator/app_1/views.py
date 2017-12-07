@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 # Create your views here.
 from django.http import HttpResponse,HttpResponseRedirect
 from django.utils import timezone
-from .models import Profile, ItemForm, Ingredients, Items, Histories
+from .models import Profile, ItemForm, Ingredient, Item, History
 from .forms import IngredientsForm
 import requests
 import json
@@ -38,7 +38,7 @@ def add_ingredient(request, user_id, item_id):
 		if form.is_valid():
 		
 			user = Profile.objects.get(pk=user_id)
-			prev_item = Items.objects.get(pk=item_id)
+			prev_item = Item.objects.get(pk=item_id)
 			calories_acum = prev_item.calories
 			fat_acum = prev_item.tot_fat
 			protein_acum = prev_item.tot_protein
@@ -66,7 +66,7 @@ def add_ingredient(request, user_id, item_id):
 			sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 			fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 			sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-			ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_1'], amount=form.cleaned_data['amount_1'])
+			ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_1'], amount=form.cleaned_data['amount_1'])
 			ingredient_store.save()
 
 			#·INGREDIENTE 2
@@ -83,7 +83,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_2'], amount=form.cleaned_data['amount_2'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_2'], amount=form.cleaned_data['amount_2'])
 				ingredient_store.save()
 
 			#·INGREDIENTE 3
@@ -100,7 +100,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_3'], amount=form.cleaned_data['amount_3'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_3'], amount=form.cleaned_data['amount_3'])
 				ingredient_store.save()
 
 			#INGREDIENTE 4	
@@ -117,7 +117,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_4'], amount=form.cleaned_data['amount_4'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_4'], amount=form.cleaned_data['amount_4'])
 				ingredient_store.save()
 
 			#INGREDIENTE 5
@@ -134,7 +134,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_5'], amount=form.cleaned_data['amount_5'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_5'], amount=form.cleaned_data['amount_5'])
 				ingredient_store.save()
 
 			# INGREDIENTE 6
@@ -151,7 +151,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_6'], amount=form.cleaned_data['amount_6'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_6'], amount=form.cleaned_data['amount_6'])
 				ingredient_store.save()
 
 		 	#INGREDIENTE 7
@@ -168,7 +168,7 @@ def add_ingredient(request, user_id, item_id):
 		 		sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 		 		fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 		 		sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-		 		ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_7'], amount=form.cleaned_data['amount_7'])
+		 		ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_7'], amount=form.cleaned_data['amount_7'])
 		 		ingredient_store.save()
 
 		 	#INGREDIENTE 8
@@ -185,7 +185,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_8'], amount=form.cleaned_data['amount_8'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_8'], amount=form.cleaned_data['amount_8'])
 				ingredient_store.save()
 
 			#INGREDIENTE 9
@@ -202,7 +202,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_9'], amount=form.cleaned_data['amount_9'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_9'], amount=form.cleaned_data['amount_9'])
 				ingredient_store.save()
 
 		 	#INGREDIENTE 10
@@ -219,7 +219,7 @@ def add_ingredient(request, user_id, item_id):
 				sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
 				fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
 				sodium_acum += consulta_dec["foods"][0]["nf_sodium"] 
-				ingredient_store = Ingredients(item=prev_item, name=form.cleaned_data['ingredient_10'], amount=form.cleaned_data['amount_10'])
+				ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_10'], amount=form.cleaned_data['amount_10'])
 				ingredient_store.save()
 		 	
 			prev_item.calories = calories_acum 
@@ -232,7 +232,7 @@ def add_ingredient(request, user_id, item_id):
 			prev_item.sodium = sodium_acum 
 			prev_item.save()
 
-			history_entry = Histories(usuario=user, item=prev_item, date_consumed=timezone.now())
+			history_entry = History(usuario=user, item=prev_item, date_consumed=timezone.now())
 			history_entry.save()
 			return HttpResponseRedirect("/app_1/profile/"+user_id+"/history")
 
