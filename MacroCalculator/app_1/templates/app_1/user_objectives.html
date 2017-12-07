@@ -1,0 +1,7 @@
+<h1>Objectives of {{ user.first_name }}</h1>
+
+    {% if objectives != None %}
+    <p>Calories: {{ objectives.calories_obj }}</p>
+    {% else %}
+    <p>The user has not any objective defined.</p>
+    {% endif %}

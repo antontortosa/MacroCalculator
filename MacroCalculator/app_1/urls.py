@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views
+from . import views, views_davbera
 
 
 app_name = 'app_1'
@@ -16,5 +16,7 @@ urlpatterns = [
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/$', views.add_food, name='add_food'),
     # ex: /profile/5/add_food/4/add_ingredient
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/(?P<item_id>[0-9]+)/add_ingredient$', views.add_ingredient, name='add_ingredient'),
+
+    url(r'^profile/(?P<user_id>[0-9]+)/objective/$', views_davbera.objective, views_davbera.objective, name='objective'),
 
 ]		
