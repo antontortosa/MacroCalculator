@@ -4,16 +4,17 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 # Create your models here.
 class Profile(models.Model):
     # "usuario django" con el que se asocia -> https://docs.djangoproject.com/en/1.11/ref/contrib/auth/#fields
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # añadir campos no presentes en User
-    date_birth = models.DateField()
-    country = models.CharField(max_length=30)
-    city = models.CharField(max_length=30)
-    cp = models.IntegerField()
-    tags = models.CharField(max_length=180)
+    # añadir campos no presentes en User. No obligatorios
+    date_birth = models.DateField(null=True)
+    country = models.CharField(null=True, max_length=30)
+    city = models.CharField(null=True, max_length=30)
+    cp = models.IntegerField(null=True)
+    tags = models.CharField(null=True,max_length=180)
 
 
 @receiver(post_save, sender=User)
@@ -24,7 +25,8 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.Profile.save()
+    instance.profile.save()
+
 
 
     # def __str__(self):
@@ -61,6 +63,7 @@ class Ingredients(models.Model):
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     amount = models.CharField(max_length = 15)
+
 
 class ItemForm(ModelForm):
 	class Meta:

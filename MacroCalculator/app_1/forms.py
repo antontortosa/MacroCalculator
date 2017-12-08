@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 
 class IngredientsForm(forms.Form):
     ingredient_1 = forms.CharField(label='Ingredient 1', max_length=100,required=True)
@@ -21,4 +24,14 @@ class IngredientsForm(forms.Form):
     amount_9 = forms.CharField(label='Amount 9', max_length=100,required=False)
     ingredient_10 = forms.CharField(label='Ingredient 10', max_length=100,required=False)
     amount_10 = forms.CharField(label='Amount 10', max_length=100,required=False)
-   
+
+
+class RegisterForm(UserCreationForm):
+    #date_birth =
+    #first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    #last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
+    #email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
