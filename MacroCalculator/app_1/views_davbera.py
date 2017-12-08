@@ -16,11 +16,21 @@ def objective(request, user_id):
     if request.method == 'POST':
         form = ObjectivesForm(request.POST)
         if form.is_valid():
-            calories = request.POST.get('calories')
-            obj = Objective.objects.create(usuario = profile, calories_obj = calories,
-                                           carbs_obj = 0, protein_obj = 0, fat_obj = 0)
-            obj.save()
+            if obj is not None:
+                calories = request.POST.get('calories', obj.calories_obj)
+                carbs = request.POST.get('carbs', obj.carbs_obj)
+                protein = request.POST.get('protein', obj.protein_obj)
+                fat = request.POST.get('fat', obj.fat_obj)
 
+            else:
+                calories = request.POST.get('calories', -1)
+                carbs = request.POST.get('carbs', -1)
+                protein = request.POST.get('protein',-1)
+                fat = request.POST.get('fat', -1)
+
+            obj = Objective(usuario = profile, calories_obj = calories,
+                                    carbs_obj = carbs, protein_obj = protein, fat_obj = fat)
+            obj.save()
 
     context = {'profile': profile, 'objective': obj}
 

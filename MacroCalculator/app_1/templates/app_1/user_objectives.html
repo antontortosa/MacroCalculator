@@ -1,7 +1,21 @@
 <h1>Objectives of {{ profile.user.first_name }}</h1>
 
 {% if objective != None %}
-<p>Calories: {{ objective.calories_obj }}</p>
+
+<form action="" method="post">
+{% csrf_token %}
+    <input type="number" name="calories" id="calories" value="{{ objective.calories_obj }}" min="0" max="15000" />
+    <label for="calories">Calories</label><br />
+    <input type="number" name="carbs" id="carbs" value="{{ objective.carbs_obj }}"min="0" max="15000" />
+    <label for="carbs">Carbohydrates</label><br />
+    <input type="number" name="protein" id="protein" value="{{ objective.protein_obj }}" min="0" max="15000" />
+    <label for="protein">Proteins</label><br />
+    <input type="number" name="fat" id="fat" value="{{ objective.fat_obj }}" min="0" max="15000" />
+    <label for="fat">Fat</label><br />
+
+<input type="submit" value="Update" />
+</form>
+
 {% else %}
 <p>The user has not any objective defined.</p>
 
@@ -10,6 +24,12 @@
 {% csrf_token %}
     <input type="number" name="calories" id="calories" value="0" min="0" max="15000" />
     <label for="calories">Calories</label><br />
+    <input type="number" name="carbs" id="carbs" min="0" max="15000" />
+    <label for="carbs">Carbohydrates</label><br />
+    <input type="number" name="protein" id="protein" min="0" max="15000" />
+    <label for="protein">Proteins</label><br />
+    <input type="number" name="fat" id="fat" min="0" max="15000" />
+    <label for="fat">Fat</label><br />
 
 <input type="submit" value="Submit" />
 </form>
