@@ -243,5 +243,18 @@ def add_ingredient(request, user_id, item_id):
 
 
 def history(request, user_id):
-    response = "You're looking at the history of user %s."
-    return HttpResponse(response % user_id)
+    user_history = History.objects.filter(usuario=user_id)
+    items_history = [] 
+    history_entry = {}
+    for entry in user_history:
+    	history_entry["ITEM"] = Item.objects.get(pk=entry.item_id)
+    	history_entry["DATE"] = entry.date_consumed
+    	items_history.append(history_entry)
+    	history_entry = {}
+    	
+    names = "Nombres: "
+    for i in items_history:
+    	names += i["ITEM"].name
+    context = {'items_history': items_history, 'user_id':user_id,'names':names }
+    return render(request, 'app_1/history.html', context)
+

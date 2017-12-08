@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<head>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static 'css/app_1.css' %}">
+</head>
+
+
+<div class="caption">Your history</div>	
+<div id="table">
+	<div class="header-row row">
+    	<span class="cell primary">Name</span>
+    	<span class="cell">Calories</span>
+    	<span class="cell">Carbohydrates</span>
+    	<span class="cell">Proteins</span>
+    	<span class="cell">Fats</span>
+    	<span class="cell">Date</span>
+  	</div>
+ 	{% if items_history %}
+    	{% for dup in items_history %}    
+    		<div class="row">
+				<input type="radio" name="expand">
+    			<span class="cell primary" data-label="Vehicle"><strong><a href="/app_1/profile/{{ user_id }}/history/item/{{ dup.ITEM.id }}" style="color: black">{{ dup.ITEM.name }}</a></strong></span>
+    			<span class="cell" data-label="Exterior">{{ dup.ITEM.calories }}</span>
+     			<span class="cell" data-label="Interior">{{ dup.ITEM.tot_carbs }}</span>
+     			<span class="cell" data-label="Engine">{{ dup.ITEM.tot_protein }}</span>
+     			<span class="cell" data-label="Trans">{{ dup.ITEM.tot_fat }}</span>
+     			<span class="cell" data-label="Trans">{{ dup.DATE }}</span>
+  			</div>
+    	{% endfor %}
+	{% else %}
+    	<p>No user history is available.</p>
+	{% endif %}
+</div>
