@@ -6,16 +6,21 @@ from .forms import ObjectivesForm
 
 
 def objective(request, user_id):
+    profile = get_object_or_404(Profile, pk=user_id)
+
+    try:
+        obj = Objective.objects.get(usuario=profile)
+    except Exception as e:
+        obj = None
+
     if request.method == 'POST':
         form = ObjectivesForm(request.POST)
         if form.is_valid():
-            return HttpResponse("Se ha recibido POST valido")
-        else:
-            return HttpResponse("EL formulario recibido no es valido")
+            calories = request.POST.get('calories')
+            obj = Objective.objects.create(usuario = profile, calories_obj = calories,
+                                           carbs_obj = 0, protein_obj = 0, fat_obj = 0)
+            obj.save()
 
-    profile = get_object_or_404(Profile, pk=user_id)
-    obj = None
-    #obj = Objective.objects.get(usuario=user)
 
     context = {'profile': profile, 'objective': obj}
 
