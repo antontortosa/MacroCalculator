@@ -252,9 +252,6 @@ def history(request, user_id):
     	items_history.append(history_entry)
     	history_entry = {}
     	
-    names = "Nombres: "
-    for i in items_history:
-    	names += i["ITEM"].name
-    context = {'items_history': items_history, 'user_id':user_id,'names':names }
+    context = {'items_history': items_history, 'user_id':user_id}
     return render(request, 'app_1/history.html', context)
 
