@@ -19,4 +19,5 @@ urlpatterns = [
 
     url(r'^profile/(?P<user_id>[0-9]+)/objective/$', views_davbera.objective, name='objective'),
 
+
 ]		

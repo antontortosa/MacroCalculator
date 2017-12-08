@@ -4,4 +4,13 @@
 <p>Calories: {{ objectives.calories_obj }}</p>
 {% else %}
 <p>The user has not any objective defined.</p>
+
+<p>Define objective:</p>
+<form action="" method="post">
+{% csrf_token %}
+    <input type="number" name="calories" id="calories" value="0" min="0" max="15000" />
+    <label for="calories">Calories</label><br />
+
+<input type="submit" value="Submit" />
+</form>
 {% endif %}
