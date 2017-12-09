@@ -264,7 +264,7 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('home')
+            return redirect('app_1:home') # cuando esté, que redirija a la página del perfil
     else:
         form = RegisterForm()
     return render(request, 'app_1/register.html', {'form': form})
