@@ -1,0 +1,98 @@
+{% extends "base_generic.html" %}
+
+{% block title %}User objectives{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-sm-12 text-center">
+            <h2>Objectives of {{ profile.user.first_name }}</h2>
+        </div>
+    {% if objective != None %}
+
+    <form action="" method="post">
+    {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="calories">Calories:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="calories" id="calories" min="0" max="15000" value="{{ objective.calories_obj }}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="carbs">Carbohydrates:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="carbs" id="carbs" min="0" max="15000" value="{{ objective.carbs_obj }}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="protein">Proteins:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="protein" id="protein" min="0" max="15000" value="{{ objective.protein_obj }}" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="fat">Fat:</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="fat" id="fat" min="0" max="15000" value="{{ objective.fat_obj }}" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-default">Update</button>
+    </form>
+
+    {% else %}
+        <div class="alert alert-info col-sm-12 text-left">
+            <p>The user has not any objective defined.</p>
+        </div>
+
+
+        <p class="lead">Define objective</p>
+        <form class="form-horizontal" action="" method="post">
+        {% csrf_token %}
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="calories">Calories:</label>
+              <div class="col-sm-10">
+                <input class="form-control" type="number" name="calories" id="calories" min="0" max="15000" placeholder="Enter calories" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="carbs">Carbohydrates:</label>
+              <div class="col-sm-10">
+                <input class="form-control" type="number" name="carbs" id="carbs" min="0" max="15000" placeholder="Enter carbohydrates" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="protein">Proteins:</label>
+              <div class="col-sm-10">
+                <input class="form-control" type="number" name="protein" id="protein" min="0" max="15000" placeholder="Enter proteins" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="fat">Fat:</label>
+              <div class="col-sm-10">
+                <input class="form-control" type="number" name="fat" id="fat" min="0" max="15000" placeholder="Enter fat" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+    {% endif %}
+
+
+    <script type="text/javascript">
+        // Select your input element.
+       jQuery("input[type='number']").keydown(function(e){
+            if(!((e.keyCode > 95 && e.keyCode < 106)
+             || (e.keyCode > 47 && e.keyCode < 58)
+                || e.keyCode == 8)) {
+             return false;
+            }
+        });
+
+    </script>
+{% endblock %}

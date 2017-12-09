@@ -21,4 +21,6 @@ class IngredientsForm(forms.Form):
     amount_9 = forms.CharField(label='Amount 9', max_length=100,required=False)
     ingredient_10 = forms.CharField(label='Ingredient 10', max_length=100,required=False)
     amount_10 = forms.CharField(label='Amount 10', max_length=100,required=False)
-   
+
+class ObjectivesForm(forms.Form):
+    calories = forms.IntegerField(label="calories", max_value=15000, required=True)
