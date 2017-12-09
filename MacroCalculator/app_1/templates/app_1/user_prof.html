@@ -1,4 +1,16 @@
-<h1>{{ user.first_name }}</h1>
+<h1>{{ user.id }}</h1>
+<h1>{{ user.username }}</h1>
 <ul>
 <p>TODO: AÑADIR INFO USUARIO </p>
 </ul>
+
+<h2>{{request.user.username}}</h2>
+
+<p>Name: {{request.user.first_name}} </p>
+<p>Last name: {{request.user.last_name}} </p>
+<p>Email: {{request.user.email}} </p>
+<p>Birth date: {{request.user.profile.date_birth}} </p>
+<p>Country: {{request.user.profile.country}} </p>
+<p>City: {{request.user.profile.city}} </p>
+<p>Zip code: {{request.user.profile.cp}} </p>
+<p>Tags: {{request.user.profile.tags}} </p>

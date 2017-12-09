@@ -2,12 +2,13 @@ from django.shortcuts import get_object_or_404, render
 # Create your views here.
 from django.http import HttpResponse,HttpResponseRedirect
 from django.utils import timezone
-from .models import Profile, ItemForm, Ingredients, Items, Histories
+from .models import ItemForm, Ingredients, Items, Histories
 from .forms import IngredientsForm, RegisterForm
 import requests
 import json
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -15,13 +16,12 @@ def home(request):
 
 
 def index(request):
-    all_users = Profile.objects.all()
-    context = {'all_users': all_users}
-    return render(request, 'app_1/index.html', context)
+    userid = request.user.id
+    return redirect('app_1:profile', user_id=userid)
 
 
 def profile(request, user_id):
-    user = get_object_or_404(Profile, pk=user_id)
+    user = get_object_or_404(User, pk=user_id)
     return render(request, 'app_1/user_prof.html', {'user': user})
 
 
@@ -43,7 +43,7 @@ def add_ingredient(request, user_id, item_id):
         form = IngredientsForm(request.POST) #Bound form
         if form.is_valid():
 
-            user = Profile.objects.get(pk=user_id)
+            user = User.objects.get(pk=user_id)
             prev_item = Items.objects.get(pk=item_id)
             calories_acum = prev_item.calories
             fat_acum = prev_item.tot_fat
@@ -238,8 +238,8 @@ def add_ingredient(request, user_id, item_id):
             prev_item.sodium = sodium_acum
             prev_item.save()
 
-            history_entry = Histories(usuario=user, item=prev_item, date_consumed=timezone.now())
-            history_entry.save()
+            #history_entry = Histories(usuario=user, item=prev_item, date_consumed=timezone.now())
+            #history_entry.save()
             return HttpResponseRedirect("/app_1/profile/"+user_id+"/history")
 
     else:
@@ -264,7 +264,7 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('app_1:profile') # cuando esté, que redirija a la página del perfil
+            return redirect('app_1:index')
     else:
         form = RegisterForm()
     return render(request, 'app_1/register.html', {'form': form})

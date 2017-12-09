@@ -8,7 +8,7 @@ from django.dispatch import receiver
 # Create your models here.
 class Profile(models.Model):
     # "usuario django" con el que se asocia -> https://docs.djangoproject.com/en/1.11/ref/contrib/auth/#fields
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # añadir campos no presentes en User. No obligatorios
     date_birth = models.DateField(null=True)
     country = models.CharField(null=True, max_length=30)
@@ -28,11 +28,6 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-
-    # def __str__(self):
-    #	return self.first_name+', '+self.last_name+'\n'+self.email+'\n'+self.city+', '+str(self.cp)+'\n'+self.country
-
-
 class Items(models.Model):
     name = models.CharField(max_length=30, unique="true")
     calories = models.FloatField(default=0.0)
@@ -46,13 +41,13 @@ class Items(models.Model):
 
 
 class Histories(models.Model):
-    usuario = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
     date_consumed = models.DateField()
 
 
 class Objectives(models.Model):
-    usuario = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     calories_obj = models.IntegerField()
     carbs_obj = models.IntegerField()
     protein_obj = models.IntegerField()
