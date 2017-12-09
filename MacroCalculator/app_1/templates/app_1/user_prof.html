@@ -1,3 +1,8 @@
+<!-- user.id -> id de la URL; request.user.id -> id del usuario con sesión iniciada-->
+
+{% extends "base_generic.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
 <h1>{{ user.id }}</h1>
 <h1>{{ user.username }}</h1>
 <ul>
@@ -14,3 +19,4 @@
 <p>City: {{request.user.profile.city}} </p>
 <p>Zip code: {{request.user.profile.cp}} </p>
 <p>Tags: {{request.user.profile.tags}} </p>
+{% endblock %}

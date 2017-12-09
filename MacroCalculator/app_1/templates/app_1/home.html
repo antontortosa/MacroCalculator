@@ -1,3 +1,7 @@
+{% extends "base_generic.html" %}
+{% block title %}MacroCalculator{% endblock %}
+{% block content %}
 <h2>MacroCalculator</h2>
 <a href="{% url 'app_1:register' %}">Register</a>
 <a href="{% url 'app_1:login' %}">Log in</a>
+{% endblock %}

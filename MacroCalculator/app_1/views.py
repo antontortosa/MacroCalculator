@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from .models import Profile, ItemForm, Ingredient, Item, History
-from .forms import IngredientsForm, RegisterForm
+from .forms import IngredientsForm, RegisterForm, EditProfileForm
 import requests
 import json
 from django.contrib.auth import login, authenticate
@@ -287,3 +287,11 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'app_1/register.html', {'form': form})
+
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+    #TODO: Mostrar formulario con los campos actuales y actualizar solo los que hayan cambiado
+
+

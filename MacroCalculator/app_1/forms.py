@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
+
 class IngredientsForm(forms.Form):
     ingredient_1 = forms.CharField(label='Ingredient 1', max_length=100,required=True)
     amount_1 = forms.CharField(label='Amount 1', max_length=100,required=True)
@@ -29,8 +30,19 @@ class IngredientsForm(forms.Form):
 class ObjectivesForm(forms.Form):
     calories = forms.IntegerField(label="calories", max_value=15000, required=True)
 
+
 class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+
+
+class EditProfileForm(forms.Form):
+    #user = instance.id
+    #TODO: ver cómo poner valores iniciales
+    date_birth = forms.DateField()
+    country = forms.CharField(max_length=30)
+    city = forms.CharField(max_length=30)
+    cp = forms.IntegerField()
+    tags = forms.CharField(max_length=180)
