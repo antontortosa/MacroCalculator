@@ -259,12 +259,12 @@ def register(request):
         if form.is_valid():
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
-            username = form.cleaned_data.get('username')
+            #username = form.cleaned_data.get('username')
             user.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
-            return redirect('app_1:home') # cuando esté, que redirija a la página del perfil
+            return redirect('app_1:profile') # cuando esté, que redirija a la página del perfil
     else:
         form = RegisterForm()
     return render(request, 'app_1/register.html', {'form': form})

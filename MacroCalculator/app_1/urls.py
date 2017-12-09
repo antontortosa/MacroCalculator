@@ -1,13 +1,14 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
 
 from . import views
 
 app_name = 'app_1'
 
 urlpatterns = [
-    # es: /
+    # ex: /
     url(r'^$', views.home, name='home'),
-    # es: /register/
+    # ex: /register/
     url(r'^register/$', views.register, name='register'),
     # ex: /profile/
     url(r'^profile/$', views.index, name='index'),
@@ -20,5 +21,8 @@ urlpatterns = [
     # ex: /profile/5/add_food/4/add_ingredient
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/(?P<item_id>[0-9]+)/add_ingredient$', views.add_ingredient,
         name='add_ingredient'),
-
+    # ex: /login
+    url(r'^login/$', auth_views.login, {'template_name': 'app_1/login.html'}, name='login'),
+    # ex: /logout
+    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
 ]
