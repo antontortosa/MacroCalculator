@@ -250,7 +250,7 @@ def add_ingredient(request, user_id, item_id):
 
             history_entry = History(usuario=user, item=prev_item, date_consumed=timezone.now())
             history_entry.save()
-            return HttpResponseRedirect("/app_1/profile/" + user_id + "/history")
+            return HttpResponseRedirect("/profile/" + user_id + "/history")
 
     else:
         form = IngredientsForm()  # Unbound form

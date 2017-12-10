@@ -1,5 +1,9 @@
-<form action="/app_1/profile/{{user_id}}/add_food/" method="post">
+{% extends "base_generic.html" %}
+{% block title %}Add food{% endblock %}
+{% block content %}
+<form action="/profile/{{user_id}}/add_food/" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
+{% endblock %}
