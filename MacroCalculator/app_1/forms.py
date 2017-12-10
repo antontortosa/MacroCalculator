@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-
 class IngredientsForm(forms.Form):
     ingredient_1 = forms.CharField(label='Ingredient 1', max_length=100,required=True)
     amount_1 = forms.CharField(label='Amount 1', max_length=100,required=True)
@@ -32,6 +31,11 @@ class ObjectivesForm(forms.Form):
 
 
 class RegisterForm(UserCreationForm):
+    date_birth = forms.DateField(help_text='Required. Format: YYYY-MM-DD')
+    country = forms.CharField(max_length=30)
+    city = forms.CharField(max_length=30)
+    cp = forms.IntegerField(help_text='Zip code')
+    tags = forms.CharField(max_length=180)
 
     class Meta:
         model = User
@@ -46,3 +50,4 @@ class EditProfileForm(forms.Form):
     city = forms.CharField(max_length=30)
     cp = forms.IntegerField()
     tags = forms.CharField(max_length=180)
+

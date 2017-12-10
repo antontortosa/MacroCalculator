@@ -279,6 +279,11 @@ def register(request):
             user = form.save()
             user.refresh_from_db()  # load the profile instance created by the signal
             # username = form.cleaned_data.get('username')
+            user.profile.date_birth = form.cleaned_data.get('date_birth')
+            user.profile.country = form.cleaned_data.get('country')
+            user.profile.city = form.cleaned_data.get('city')
+            user.profile.cp = form.cleaned_data.get('cp')
+            user.profile.tags = form.cleaned_data.get('tags')
             user.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
