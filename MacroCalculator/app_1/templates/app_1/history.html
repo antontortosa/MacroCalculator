@@ -1,42 +1,93 @@
 {% extends "base_generic.html" %}
 {% block title %}History{% endblock %}
 {% block content %}
-{% load staticfiles %}
-<head>
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="{% static 'css/app_1.css' %}">
-</head>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    var table = $('#table1').DataTable({
+        "dom": '<"top"f>rt<"bottom"p><"clear">',
+		"order": [[ 5, "desc" ]],
+		"pageLength": 50
+    });
+
+    table.columns().every( function () {
+    	var that = this;
+
+   		 jQuery( 'input', this.footer() ).on( 'keyup change', function () {
+    		if ( that.search() !== this.value ) {
+    			that
+    				.search( this.value )
+    				.draw();
+        	}
+   		 });
+     });
+
+  });
 
 
-<div class="caption">Your history</div>
-<div id="table">
-	<div class="header-row row">
-    	<span class="cell primary">Name</span>
-    	<span class="cell">Calories</span>
-    	<span class="cell">Carbohydrates</span>
-    	<span class="cell">Proteins</span>
-    	<span class="cell">Fats</span>
-    	<span class="cell">Date</span>
-        <span class="cell">Actions</span>
-  	</div>
- 	{% if items_history %}
-    	{% for dup in items_history %}    
-    		<div class="row">
-				<input type="radio" name="expand">
-    			<span class="cell primary" data-label="Vehicle"><strong><a href="/profile/{{ user_id }}/history/item/{{ dup.ITEM.id }}" style="color: black">{{ dup.ITEM.name }}</a></strong></span>
-    			<span class="cell" data-label="Calories">{{ dup.ITEM.calories }}</span>
-     			<span class="cell" data-label="Carbohydrates">{{  dup.ITEM.tot_carbs|floatformat:2 }}</span>
-     			<span class="cell" data-label="Proteins">{{ dup.ITEM.tot_protein|floatformat:2 }}</span>
-     			<span class="cell" data-label="Trans">{{ dup.ITEM.tot_fat|floatformat:2}}</span>
-     			<span class="cell" data-label="Date">{{ dup.DATE }}</span>
-                <span class="cell" data-label="Actions"><a href="/profile/{{ user_id }}/item/{{ dup.ITEM.id }}/delete">
+
+</script>
+
+<div class="container-fluid">
+
+	<h2>Your history</h2>
+
+      <!--div class="input-group" id="adv-search">
+        <input type="text" class="form-control" placeholder="Search for objective" />
+        <div class="btn-group">
+          <div class="dropdown dropdown-lg">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="caret"></span></button>
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label for="contain">Calories</label>
+                  <input class="form-control" type="number" name="calories" id="calories" min="0" max="15000" />
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+
+          <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </div>
+      </div-->
+
+     	<table id="table1" class="table">
+     	 <thead>
+      	  <tr>
+        	  <th scope="col">Name</th>
+        	  <th scope="col">Calories</th>
+        	  <th scope="col">Carbohydrates</th>
+         	  <th scope="col">Proteins</th>
+        	  <th scope="col">Fats</th>
+        	  <th scope="col">Date</th>
+			  <th scope="col">Actions</th>
+		  </tr>
+     	 </thead>
+     	 <tbody>
+		 <tbody>
+		{% if items_history %}
+    	{% for dup in items_history %}
+    		<tr>
+				<td><strong><a href="/profile/{{ user_id }}/history/item/{{ dup.ITEM.id }}" style="color: black">{{ dup.ITEM.name }}</a></strong></td>
+				<td>{{ dup.ITEM.calories }}</td>
+				<td>{{ dup.ITEM.tot_carbs|floatformat:2 }}</td>
+				<td>{{ dup.ITEM.tot_protein|floatformat:2  }}</td>
+				<td>{{ dup.ITEM.tot_fat|floatformat:2  }}</td>
+				<td>{{ dup.DATE }}</td>
+				<td><a href="/profile/{{ user_id }}/item/{{ dup.ITEM.id }}/delete">
                     <img border="0" alt="delete food" src="{% static 'images/delete.png' %}" width="30" height="30    ">
-                </a></span>
-  			</div>
+                </a></td>
+  			</tr>
     	{% endfor %}
-	{% else %}
-    	<p>No user history is available.</p>
-	{% endif %}
+		{% endif %}
+     	 </tbody>
+    	</table>
+	</div>
 </div>
+
+
+
 {% endblock %}
