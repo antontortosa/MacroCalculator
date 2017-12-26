@@ -3,7 +3,87 @@
 {% block content %}
 <form action="/profile/{{user_id}}/add_food/{{item_id}}/add_ingredient" method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
+    {{ form.non_field_errors }}
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 1:</label>
+    	{{ form.ingredient_1 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 1:</label>
+    	{{ form.amount_1 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 2:</label>
+    	{{ form.ingredient_2 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 2:</label>
+    	{{ form.amount_2 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 3:</label>
+    	{{ form.ingredient_3 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 3:</label>
+    	{{ form.amount_3 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 4:</label>
+    	{{ form.ingredient_4 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 4:</label>
+    	{{ form.amount_4 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 5:</label>
+    	{{ form.ingredient_5 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 5:</label>
+    	{{ form.amount_5 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 6:</label>
+    	{{ form.ingredient_6 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 6:</label>
+    	{{ form.amount_6 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 7:</label>
+    	{{ form.ingredient_7 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 7:</label>
+    	{{ form.amount_7 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 8:</label>
+    	{{ form.ingredient_8 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 8:</label>
+    	{{ form.amount_8 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 9:</label>
+    	{{ form.ingredient_9 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 9:</label>
+    	{{ form.amount_9 }}
+	</div>
+	<div class="fieldWrapper">
+    	{{ form.subject.errors }}
+    	<label for="{{ form.subject.id_for_label }}">Ingredient 10:</label>
+    	{{ form.ingredient_10 }}
+    	{{ form.message.errors }}
+    	<label for="{{ form.message.id_for_label }}">Amount 10:</label>
+    	{{ form.amount_10 }}
+	</div>
+	<input type="submit" value="Submit">
 </form>
 {% endblock %}

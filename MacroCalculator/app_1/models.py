@@ -60,6 +60,7 @@ class Ingredient(models.Model):
     amount = models.CharField(max_length=15)
 
 
+
 class ItemForm(ModelForm):
     class Meta:
         model = Item

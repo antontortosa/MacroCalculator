@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+import requests
+import json
+import sys
 
 class IngredientsForm(forms.Form):
     ingredient_1 = forms.CharField(label='Ingredient 1', max_length=100,required=True)
@@ -24,6 +26,34 @@ class IngredientsForm(forms.Form):
     amount_9 = forms.CharField(label='Amount 9', max_length=100,required=False)
     ingredient_10 = forms.CharField(label='Ingredient 10', max_length=100,required=False)
     amount_10 = forms.CharField(label='Amount 10', max_length=100,required=False)
+
+    def clean(self):
+        form_data = self.cleaned_data
+        #Set API
+        app_id = "050e8e37"
+        api_key = "d0142932f60a692aa1934cb8d9971206"
+        url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
+        headers = {'x-app-id': app_id, 'x-app-key': api_key}
+        #Call API
+        
+        index = "ingredient_X"
+
+        for i in range(1,10):
+            index = index[:-1]
+            index = index + str(i)
+            if form_data[index] != None :
+                val = form_data[index] + ' ' + form_data[index]
+                payload = {'query': val}
+                consulta_raw = requests.post(url, headers=headers, data=payload).text
+                consulta_dec = json.loads(consulta_raw)
+                print(consulta_dec, file=sys.stderr)
+                if "message" in consulta_dec and consulta_dec['message'] == "We couldn't match any of your foods" :
+                    raise forms.ValidationError(
+                        "Ingredient "+str(i)+" doesn't match any known ingredient"
+                    )
+
+        return form_data
+
 
 
 class ObjectivesForm(forms.Form):

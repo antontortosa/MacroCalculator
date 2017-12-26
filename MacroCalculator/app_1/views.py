@@ -9,7 +9,7 @@ import json
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-
+from decimal import Decimal
 
 def home(request):
     return render(request, 'app_1/home.html')
@@ -37,6 +37,10 @@ def add_food(request, user_id):
 
     return render(request, 'app_1/item_form.html', {'form': form, 'user_id': user_id})
 
+def delete_food(request, user_id, item_id):
+    object = get_object_or_404(Item, pk=item_id)
+    object.delete()
+    return HttpResponseRedirect("/profile/" + user_id + "/history")
 
 def add_ingredient(request, user_id, item_id):
     if request.method == 'POST':  # si el usuario está enviando el formulario con datos
@@ -64,24 +68,7 @@ def add_ingredient(request, user_id, item_id):
             payload = {'query': val}
             consulta_raw = requests.post(url, headers=headers, data=payload).text
             consulta_dec = json.loads(consulta_raw)
-            calories_acum += consulta_dec["foods"][0]["nf_calories"]
-            fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-            protein_acum += consulta_dec["foods"][0]["nf_protein"]
-            sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-            carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-            sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-            fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-            sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-            ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_1'],
-                                          amount=form.cleaned_data['amount_1'])
-            ingredient_store.save()
-
-            # ·INGREDIENTE 2
-            if form.cleaned_data['ingredient_2'] and form.cleaned_data['amount_2']:
-                val = form.cleaned_data['ingredient_2'] + ' ' + form.cleaned_data['amount_2']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
+            if "foods" in consulta_dec:
                 calories_acum += consulta_dec["foods"][0]["nf_calories"]
                 fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
                 protein_acum += consulta_dec["foods"][0]["nf_protein"]
@@ -90,153 +77,35 @@ def add_ingredient(request, user_id, item_id):
                 sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
                 fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
                 sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_2'],
-                                              amount=form.cleaned_data['amount_2'])
+                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_1'],
+                                              amount=form.cleaned_data['amount_1'])
                 ingredient_store.save()
 
-                # ·INGREDIENTE 3
-            if form.cleaned_data['ingredient_3'] and form.cleaned_data['amount_3']:
-                val = form.cleaned_data['ingredient_3'] + ' ' + form.cleaned_data['amount_3']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_3'],
-                                              amount=form.cleaned_data['amount_3'])
-                ingredient_store.save()
+            ingredient_ix  = "ingredient_X"
+            amount_ix = "amount_x"
 
-                # INGREDIENTE 4
-            if form.cleaned_data['ingredient_4'] and form.cleaned_data['amount_4']:
-                val = form.cleaned_data['ingredient_4'] + ' ' + form.cleaned_data['amount_4']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_4'],
-                                              amount=form.cleaned_data['amount_4'])
-                ingredient_store.save()
-
-                # INGREDIENTE 5
-            if form.cleaned_data['ingredient_5'] and form.cleaned_data['amount_5']:
-                val = form.cleaned_data['ingredient_5'] + ' ' + form.cleaned_data['amount_5']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_5'],
-                                              amount=form.cleaned_data['amount_5'])
-                ingredient_store.save()
-
-            # INGREDIENTE 6
-            if form.cleaned_data['ingredient_6'] and form.cleaned_data['amount_6']:
-                val = form.cleaned_data['ingredient_6'] + ' ' + form.cleaned_data['amount_6']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_6'],
-                                              amount=form.cleaned_data['amount_6'])
-                ingredient_store.save()
-
-                # INGREDIENTE 7
-            if form.cleaned_data['ingredient_7'] and form.cleaned_data['amount_7']:
-                val = form.cleaned_data['ingredient_7'] + ' ' + form.cleaned_data['amount_7']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += ["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_7'],
-                                              amount=form.cleaned_data['amount_7'])
-                ingredient_store.save()
-
-                # INGREDIENTE 8
-            if form.cleaned_data['ingredient_8'] and form.cleaned_data['amount_8']:
-                val = form.cleaned_data['ingredient_8'] + ' ' + form.cleaned_data['amount_8']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_8'],
-                                              amount=form.cleaned_data['amount_8'])
-                ingredient_store.save()
-
-                # INGREDIENTE 9
-            if form.cleaned_data['ingredient_9'] and form.cleaned_data['amount_9']:
-                val = form.cleaned_data['ingredient_9'] + ' ' + form.cleaned_data['amount_9']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_9'],
-                                              amount=form.cleaned_data['amount_9'])
-                ingredient_store.save()
-
-                # INGREDIENTE 10
-            if form.cleaned_data['ingredient_10'] and form.cleaned_data['amount_10']:
-                val = form.cleaned_data['ingredient_10'] + ' ' + form.cleaned_data['amount_10']
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                calories_acum += consulta_dec["foods"][0]["nf_calories"]
-                fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
-                protein_acum += consulta_dec["foods"][0]["nf_protein"]
-                sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
-                carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
-                sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
-                fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
-                sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
-                ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data['ingredient_10'],
-                                              amount=form.cleaned_data['amount_10'])
-                ingredient_store.save()
+            for i in range(2,10):
+                ingredient_ix = ingredient_ix[:-1]
+                amount_ix = amount_ix[:-1]
+                ingredient_ix = ingredient_ix + str(i)
+                amount_ix = amount_ix + str(i)
+                if form.cleaned_data[ingredient_ix] and form.cleaned_data[amount_ix]:
+                    val = form.cleaned_data[ingredient_ix] + ' ' + form.cleaned_data[amount_ix]
+                    payload = {'query': val}
+                    consulta_raw = requests.post(url, headers=headers, data=payload).text
+                    consulta_dec = json.loads(consulta_raw)
+                    if "foods" in consulta_dec:
+                        calories_acum += consulta_dec["foods"][0]["nf_calories"]
+                        fat_acum += consulta_dec["foods"][0]["nf_total_fat"]
+                        protein_acum += consulta_dec["foods"][0]["nf_protein"]
+                        sugar_acum += consulta_dec["foods"][0]["nf_sugars"]
+                        carbs_acum += consulta_dec["foods"][0]["nf_total_carbohydrate"]
+                        sat_fat_acum += consulta_dec["foods"][0]["nf_saturated_fat"]
+                        fiber_acum += consulta_dec["foods"][0]["nf_dietary_fiber"]
+                        sodium_acum += consulta_dec["foods"][0]["nf_sodium"]
+                        ingredient_store = Ingredient(item=prev_item, name=form.cleaned_data[ingredient_ix],
+                                                      amount=form.cleaned_data[amount_ix])
+                        ingredient_store.save()
 
             prev_item.calories = calories_acum
             prev_item.tot_fat = fat_acum

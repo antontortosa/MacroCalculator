@@ -18,6 +18,8 @@ urlpatterns = [
     url(r'^profile/(?P<user_id>[0-9]+)/history/$', views.history, name='history'),
     # ex: /profile/5/add_food
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/$', views.add_food, name='add_food'),
+    # ex: /profile/5/add_food/3/delete
+    url(r'^profile/(?P<user_id>[0-9]+)/item/(?P<item_id>[0-9]+)/delete$', views.delete_food, name='delete_food'),
     # ex: /profile/5/add_food/4/add_ingredient
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/(?P<item_id>[0-9]+)/add_ingredient$', views.add_ingredient,
         name='add_ingredient'),
@@ -28,4 +30,6 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name': 'app_1/login.html'}, name='login'),
     # ex: /logout
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+
+
 ]

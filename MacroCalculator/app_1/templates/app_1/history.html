@@ -18,17 +18,21 @@
     	<span class="cell">Proteins</span>
     	<span class="cell">Fats</span>
     	<span class="cell">Date</span>
+        <span class="cell">Actions</span>
   	</div>
  	{% if items_history %}
     	{% for dup in items_history %}    
     		<div class="row">
 				<input type="radio" name="expand">
     			<span class="cell primary" data-label="Vehicle"><strong><a href="/profile/{{ user_id }}/history/item/{{ dup.ITEM.id }}" style="color: black">{{ dup.ITEM.name }}</a></strong></span>
-    			<span class="cell" data-label="Exterior">{{ dup.ITEM.calories }}</span>
-     			<span class="cell" data-label="Interior">{{ dup.ITEM.tot_carbs }}</span>
-     			<span class="cell" data-label="Engine">{{ dup.ITEM.tot_protein }}</span>
-     			<span class="cell" data-label="Trans">{{ dup.ITEM.tot_fat }}</span>
-     			<span class="cell" data-label="Trans">{{ dup.DATE }}</span>
+    			<span class="cell" data-label="Calories">{{ dup.ITEM.calories }}</span>
+     			<span class="cell" data-label="Carbohydrates">{{  dup.ITEM.tot_carbs|floatformat:2 }}</span>
+     			<span class="cell" data-label="Proteins">{{ dup.ITEM.tot_protein|floatformat:2 }}</span>
+     			<span class="cell" data-label="Trans">{{ dup.ITEM.tot_fat|floatformat:2}}</span>
+     			<span class="cell" data-label="Date">{{ dup.DATE }}</span>
+                <span class="cell" data-label="Actions"><a href="/profile/{{ user_id }}/item/{{ dup.ITEM.id }}/delete">
+                    <img border="0" alt="delete food" src="{% static 'images/delete.png' %}" width="30" height="30    ">
+                </a></span>
   			</div>
     	{% endfor %}
 	{% else %}
