@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 # Create your views here.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
-from .models import Profile, ItemForm, Ingredient, Item, History
-from .forms import IngredientsForm, RegisterForm, EditProfileForm
+from .models import Profile, Ingredient, Item, History
+from .forms import ItemForm, IngredientsForm, RegisterForm, EditProfileForm
 import requests
 import json
 from django.contrib.auth import login, authenticate
@@ -29,24 +29,14 @@ def profile(request, user_id):
 
 def add_food(request, user_id):
     if request.method == 'POST':  # si el usuario está enviando el formulario con datos
-        form = ItemForm(request.POST)  # Bound form
+        form = ItemForm(request.POST, user=request.user)  # Bound form
         if form.is_valid():
-            myHistory = History.objects.filter(usuario=user_id)
-            l_items = myHistory.values_list()
-            print("XXXXXXXXXXXXXXXXXXXXXX", file=sys.stderr)
-            print(l_items, file=sys.stderr)
-            print("XXXXXXXXXXXXXXXXXXXXXX", file=sys.stderr)
-            for ll in l_items :
-                if form.cleaned_data["name"] == Item.objects.get(pk=ll[2]).name :
-                    ##ERROR
-                    raise forms.ValidationError(
-                            "Food name "+ form.cleaned_data["name"] +" already exists"
-                    )
-            new_item = form.save()  # Guardar los datos en la base de datos
+            new_item = Item(name = form.cleaned_data['name'])
+            new_item.save()  # Guardar los datos en la base de datos
             url = str(new_item.id) + '/add_ingredient'
             return HttpResponseRedirect(url)
     else:
-        form = ItemForm()  # Unbound form
+        form = ItemForm(user=request.user)  # Unbound form
 
     return render(request, 'app_1/item_form.html', {'form': form, 'user_id': user_id})
 

@@ -1,9 +1,35 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import History, Profile, Item
 import requests
 import json
 import sys
+
+class ItemForm(forms.Form):
+    name = forms.CharField(label='Name', max_length = 100,required=True)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')  # cache the user object you pass in
+        super(ItemForm, self).__init__(*args, **kwargs)  # and carry on to init the form
+
+
+    def clean(self):
+    # test the rate limit by passing in the cached user object
+        cleaned_data = super().clean()
+        name_form = cleaned_data.get('name')
+        myHistory = History.objects.filter(usuario=Profile.objects.get(pk=self.user))
+        l_items = myHistory.values_list()
+        #print("XXXXXXXXXXXXXXXXXXXXXX", file=sys.stderr)
+        #print(l_items, file=sys.stderr)
+        #print("XXXXXXXXXXXXXXXXXXXXXX", file=sys.stderr)
+        for ll in l_items :
+            if name_form == Item.objects.get(pk=ll[2]).name :
+                ##ERROR
+                raise forms.ValidationError(
+                        "Food name "+ cleaned_data["name"] +" already exists"
+                )
+        return self.cleaned_data  # never forget this!
 
 class IngredientsForm(forms.Form):
     ingredient_1 = forms.CharField(label='Ingredient 1', max_length=100,required=True)
@@ -50,7 +76,7 @@ class IngredientsForm(forms.Form):
                     payload = {'query': val}
                     consulta_raw = requests.post(url, headers=headers, data=payload).text
                     consulta_dec = json.loads(consulta_raw)
-                    #print(consulta_dec, file=sys.stderr)
+                    #   
                     if "message" in consulta_dec and consulta_dec['message'] == "We couldn't match any of your foods" :
                         raise forms.ValidationError(
                             "Ingredient "+str(i)+" doesn't match any known ingredient"
