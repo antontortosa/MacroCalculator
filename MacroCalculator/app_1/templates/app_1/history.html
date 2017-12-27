@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 {% block title %}History{% endblock %}
 {% block content %}
+{% load static %}
 
 {% load staticfiles %}
 
@@ -8,24 +9,27 @@
   $(document).ready(function() {
 
     var table = $('#table1').DataTable({
-        "dom": '<"top"f>rt<"bottom"p><"clear">',
+        "dom": '<"top">rt<"bottom"p><"clear">',
 		"order": [[ 5, "desc" ]],
-		"pageLength": 50
+		"pageLength": 50,
     });
 
-    table.columns().every( function () {
-    	var that = this;
+/*
+    jQuery("#buttonfilter").click(function(event){
+    	event.preventDefault();
+    	$("#dlDropDown").dropdown("toggle");
+    	return false;
+    });*/
 
-   		 jQuery( 'input', this.footer() ).on( 'keyup change', function () {
-    		if ( that.search() !== this.value ) {
-    			that
-    				.search( this.value )
-    				.draw();
-        	}
-   		 });
-     });
 
-  });
+	 jQuery("#namefilter").keyup(function () {
+	     table
+        .columns( 0 )
+        .search( this.value )
+        .draw();
+	 });
+
+});
 
 
 
@@ -35,59 +39,57 @@
 
 	<h2>Your history</h2>
 
-      <!--div class="input-group" id="adv-search">
-        <input type="text" class="form-control" placeholder="Search for objective" />
-        <div class="btn-group">
-          <div class="dropdown dropdown-lg">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="caret"></span></button>
-            <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <form class="form-horizontal" role="form">
-                <div class="form-group">
-                  <label for="contain">Calories</label>
-                  <input class="form-control" type="number" name="calories" id="calories" min="0" max="15000" />
-                </div>
-              </form>
-            </div>
-          </div>
+	<div class="input-group">
+		<div class="input-group-btn search-panel">
+		   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				<span id="search_concept">Filter by</span> <span class="caret"></span>
+		   </button>
 
-
-
-          <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-        </div>
-      </div-->
-
-     	<table id="table1" class="table">
-     	 <thead>
-      	  <tr>
-        	  <th scope="col">Name</th>
-        	  <th scope="col">Calories</th>
-        	  <th scope="col">Carbohydrates</th>
-         	  <th scope="col">Proteins</th>
-        	  <th scope="col">Fats</th>
-        	  <th scope="col">Date</th>
-			  <th scope="col">Actions</th>
-		  </tr>
-     	 </thead>
-     	 <tbody>
-		 <tbody>
-		{% if items_history %}
-    	{% for dup in items_history %}
-    		<tr>
-				<td><strong><a href="/profile/{{ user_id }}/history/item/{{ dup.ITEM.id }}" style="color: black">{{ dup.ITEM.name }}</a></strong></td>
-				<td>{{ dup.ITEM.calories }}</td>
-				<td>{{ dup.ITEM.tot_carbs|floatformat:2 }}</td>
-				<td>{{ dup.ITEM.tot_protein|floatformat:2  }}</td>
-				<td>{{ dup.ITEM.tot_fat|floatformat:2  }}</td>
-				<td>{{ dup.DATE }}</td>
-				<td><a href="/profile/{{ user_id }}/item/{{ dup.ITEM.id }}/delete">
-                    <img border="0" alt="delete food" src="" width="30" height="30    ">
-                </a></td>
-  			</tr>
-    	{% endfor %}
-		{% endif %}
-     	 </tbody>
-    	</table>
+			<div class="dropdown-menu" role="menu" style="width:600px !important;">
+				<form>
+					<div class="form-group form-inline">
+						<label for="namefilter">Name: </label>
+						<input id="namefilter" class="form-control" type="text" />
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
+
+
+
+	<table id="table1" class="table">
+	 <thead>
+	  <tr>
+		  <th scope="col">Name</th>
+		  <th scope="col">Calories</th>
+		  <th scope="col">Carbohydrates</th>
+		  <th scope="col">Proteins</th>
+		  <th scope="col">Fats</th>
+		  <th scope="col">Date</th>
+		  <th scope="col">Actions</th>
+	  </tr>
+	 </thead>
+	 <tbody>
+
+	{% if items_history %}
+	{% for dup in items_history %}
+		<tr>
+			<td><strong><a href="/profile/{{ user_id }}/history/item/{{ dup.ITEM.id }}" style="color: black">{{ dup.ITEM.name }}</a></strong></td>
+			<td>{{ dup.ITEM.calories }}</td>
+			<td>{{ dup.ITEM.tot_carbs|floatformat:2 }}</td>
+			<td>{{ dup.ITEM.tot_protein|floatformat:2  }}</td>
+			<td>{{ dup.ITEM.tot_fat|floatformat:2  }}</td>
+			<td>{{ dup.DATE }}</td>
+			<td><a href="/profile/{{ user_id }}/item/{{ dup.ITEM.id }}/delete">
+				<img border="0" alt="delete food" src="{% static 'images/delete.png' %}" width="30" height="30    ">
+			</a></td>
+		</tr>
+	{% endfor %}
+	{% endif %}
+	 </tbody>
+	</table>
+
 </div>
 
 <div class="float-md-right">
