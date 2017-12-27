@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+import sys
 
 # Create your models here.
 class Profile(models.Model):
@@ -29,7 +29,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Item(models.Model):
-    name = models.CharField(max_length=30, unique="true")
+    name = models.CharField(max_length=30)
     calories = models.FloatField(default=0.0)
     tot_fat = models.FloatField(default=0.0)
     tot_protein = models.FloatField(default=0.0)
@@ -38,7 +38,6 @@ class Item(models.Model):
     fat_saturated = models.FloatField(default=0.0)
     fiber = models.FloatField(default=0.0)
     sodium = models.FloatField(default=0.0)
-
 
 class History(models.Model):
     usuario = models.ForeignKey(Profile, on_delete=models.CASCADE)

@@ -36,21 +36,25 @@ class IngredientsForm(forms.Form):
         headers = {'x-app-id': app_id, 'x-app-key': api_key}
         #Call API
         
-        index = "ingredient_X"
+        ingredient_ix  = "ingredient_X"
+        amount_ix = "amount_X"
 
         for i in range(1,10):
-            index = index[:-1]
-            index = index + str(i)
-            if form_data[index] != None :
-                val = form_data[index] + ' ' + form_data[index]
-                payload = {'query': val}
-                consulta_raw = requests.post(url, headers=headers, data=payload).text
-                consulta_dec = json.loads(consulta_raw)
-                print(consulta_dec, file=sys.stderr)
-                if "message" in consulta_dec and consulta_dec['message'] == "We couldn't match any of your foods" :
-                    raise forms.ValidationError(
-                        "Ingredient "+str(i)+" doesn't match any known ingredient"
-                    )
+            ingredient_ix = ingredient_ix[:-1]
+            ingredient_ix = ingredient_ix + str(i)
+            amount_ix = amount_ix[:-1]
+            amount_ix = amount_ix + str(i)
+            if form_data[ingredient_ix] :
+                val = form_data[ingredient_ix] + ' ' + form_data[amount_ix]
+                if val != "" :
+                    payload = {'query': val}
+                    consulta_raw = requests.post(url, headers=headers, data=payload).text
+                    consulta_dec = json.loads(consulta_raw)
+                    #print(consulta_dec, file=sys.stderr)
+                    if "message" in consulta_dec and consulta_dec['message'] == "We couldn't match any of your foods" :
+                        raise forms.ValidationError(
+                            "Ingredient "+str(i)+" doesn't match any known ingredient"
+                        )
 
         return form_data
 
