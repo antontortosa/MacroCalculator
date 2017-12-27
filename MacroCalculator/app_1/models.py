@@ -57,10 +57,3 @@ class Ingredient(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     amount = models.CharField(max_length=15)
-
-
-
-class ItemForm(ModelForm):
-    class Meta:
-        model = Item
-        fields = ['name']
