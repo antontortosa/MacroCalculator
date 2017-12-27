@@ -10,6 +10,8 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from decimal import Decimal
+import sys
+from django import forms
 
 def home(request):
     return render(request, 'app_1/home.html')
@@ -29,6 +31,17 @@ def add_food(request, user_id):
     if request.method == 'POST':  # si el usuario está enviando el formulario con datos
         form = ItemForm(request.POST)  # Bound form
         if form.is_valid():
+            myHistory = History.objects.filter(usuario=user_id)
+            l_items = myHistory.values_list()
+            print("XXXXXXXXXXXXXXXXXXXXXX", file=sys.stderr)
+            print(l_items, file=sys.stderr)
+            print("XXXXXXXXXXXXXXXXXXXXXX", file=sys.stderr)
+            for ll in l_items :
+                if form.cleaned_data["name"] == Item.objects.get(pk=ll[2]).name :
+                    ##ERROR
+                    raise forms.ValidationError(
+                            "Food name "+ form.cleaned_data["name"] +" already exists"
+                    )
             new_item = form.save()  # Guardar los datos en la base de datos
             url = str(new_item.id) + '/add_ingredient'
             return HttpResponseRedirect(url)
@@ -38,8 +51,8 @@ def add_food(request, user_id):
     return render(request, 'app_1/item_form.html', {'form': form, 'user_id': user_id})
 
 def delete_food(request, user_id, item_id):
-    object = get_object_or_404(Item, pk=item_id)
-    object.delete()
+    obj = get_object_or_404(Item, pk=item_id)
+    obj.delete()
     return HttpResponseRedirect("/profile/" + user_id + "/history")
 
 def add_ingredient(request, user_id, item_id):
@@ -84,13 +97,14 @@ def add_ingredient(request, user_id, item_id):
             ingredient_ix  = "ingredient_X"
             amount_ix = "amount_x"
 
-            for i in range(2,10):
+            for i in range(2,11):
                 ingredient_ix = ingredient_ix[:-1]
                 amount_ix = amount_ix[:-1]
                 ingredient_ix = ingredient_ix + str(i)
                 amount_ix = amount_ix + str(i)
-                if form.cleaned_data[ingredient_ix] and form.cleaned_data[amount_ix]:
-                    val = form.cleaned_data[ingredient_ix] + ' ' + form.cleaned_data[amount_ix]
+                #if form.cleaned_data[ingredient_ix] and form.cleaned_data[amount_ix]:
+                val = form.cleaned_data[ingredient_ix] + ' ' + form.cleaned_data[amount_ix]
+                if val != "" :
                     payload = {'query': val}
                     consulta_raw = requests.post(url, headers=headers, data=payload).text
                     consulta_dec = json.loads(consulta_raw)
