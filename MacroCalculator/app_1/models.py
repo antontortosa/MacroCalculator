@@ -15,7 +15,7 @@ class Profile(models.Model):
     city = models.CharField(null=True, max_length=30)
     cp = models.IntegerField(null=True)
     tags = models.CharField(null=True, max_length=180)
-
+    isActive = models.BooleanField(default=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

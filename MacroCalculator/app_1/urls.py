@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib.auth import views as auth_views
 
-from . import views, views_davbera
+from . import views
 
 app_name = 'app_1'
 
@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/(?P<item_id>[0-9]+)/add_ingredient$', views.add_ingredient,
         name='add_ingredient'),
 
-    url(r'^profile/(?P<user_id>[0-9]+)/objective/$', views_davbera.objective, name='objective'),
+    url(r'^profile/(?P<user_id>[0-9]+)/objective/$', views.objective, name='objective'),
 
     # ex: /login
     url(r'^login/$', auth_views.login, {'template_name': 'app_1/login.html'}, name='login'),
