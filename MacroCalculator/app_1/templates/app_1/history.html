@@ -85,15 +85,56 @@
 			</a></td>
 		</tr>
 	{% endfor %}
-	{% endif %}
+	{% else %}
+        <p><strong>NOTHING TO SHOW</strong></p>
+    {% endif %}
+
 	 </tbody>
 	</table>
-
 </div>
-
-<div class="float-md-right">
-    <a href="/profile/{{ user_id }}/add_food" class="btn btn-info" role="button">Add Food <img border="0" alt="delete food" src="{% static 'images/add.png' %}" width="30" height="30" > </a>
-</div><br>
+<div class="container-fluid">
+    <h2>How well are you doing?</h2>
+        <table id="table1" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Macronutrient</th>
+                    <th scope="col">Consumed</th>
+                    <th scope="col">Objective</th>
+                    <th scope="col">Percentage achieved</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if user_objectives %} 
+                    <tr>
+                        <td><strong></strong>Calories</td>
+                        <td>{{ macro_eaten.cal|floatformat:2 }}</td>
+                        <td>{{  user_objectives.calories_obj }}</td>
+                        <td>{{ macro_eaten.cal_p|floatformat:2 }}%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Carbohydrates</strong></td>
+                        <td>{{ macro_eaten.carb|floatformat:2 }}</td>
+                        <td>{{  user_objectives.carbs_obj }}</td>
+                        <td>{{ macro_eaten.carb_p|floatformat:2 }}%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proteins</strong></td>
+                        <td>{{ macro_eaten.prot|floatformat:2 }}</td>
+                        <td>{{  user_objectives.protein_obj }}</td>
+                        <td>{{ macro_eaten.prot_p|floatformat:2 }}%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fats</strong></td>
+                        <td>{{ macro_eaten.fat|floatformat:2 }}</td>
+                        <td>{{  user_objectives.fat_obj }}</td>
+                        <td>{{ macro_eaten.fat_p|floatformat:2 }}%</td>
+                    </tr>
+                {% else %}
+                    <p><strong>NOTHING TO SHOW</strong></p>
+                {% endif %}
+            </tbody>
+        </table>
+</div>
 <div>
     
 </div>
