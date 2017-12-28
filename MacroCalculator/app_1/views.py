@@ -167,10 +167,17 @@ def register(request):
     return render(request, 'app_1/register.html', {'form': form})
 
 
-def edit_profile(request):
+def edit_profile(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
-    #TODO: Mostrar formulario con los campos actuales y actualizar solo los que hayan cambiado
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.email = request.POST.get('email', user.email)
+
+        user.save()
+
+    return render(request, 'app_1/profile.html', {'user': user})
 
 
 def remove_user(request, user_id):

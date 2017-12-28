@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<form action="." method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="id_first_name">First name:</label>
+        <div class="col-sm-10">
+            <input class="form-control" name="first_name" id="id_first_name" maxlength="30" type="text" value="{{user.first_name}}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="id_last_name">Last name:</label>
+        <div class="col-sm-10">
+            <input class="form-control" name="last_name" id="id_last_name" maxlength="30" type="text" value="{{user.last_name}}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="id_first_name">Email:</label>
+        <div class="col-sm-10">
+            <input class="form-control" name="email" id="id_email" maxlength="254" type="email" value="{{user.email}}">
+        </div>
+    </div>
+
+    <button type="submit">Update Profile</button>
+</form>
+
+{% endblock %}

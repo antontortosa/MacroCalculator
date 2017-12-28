@@ -27,6 +27,9 @@ urlpatterns = [
 
     url(r'^profile/(?P<user_id>[0-9]+)/objective/$', views.objective, name='objective'),
 
+    url(r'^profile/(?P<user_id>[0-9]+)/modify_profile/$', views.edit_profile, name='edit_profile'),
+
+
     # ex: /login
     url(r'^login/$', auth_views.login, {'template_name': 'app_1/login.html'}, name='login'),
     # ex: /logout
