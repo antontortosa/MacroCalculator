@@ -20,4 +20,12 @@
     <p><a href="add_food">Add food</a></p>
     <p><a href="history">History</a></p>
 </div>
+
+<div class="container-fluid">
+    <form action="/profile/{{user.id}}/remove_user" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-default">Remove User</button>
+    </form>
+
+</div>
 {% endblock %}

@@ -23,13 +23,15 @@ urlpatterns = [
     # ex: /profile/5/add_food/4/add_ingredient
     url(r'^profile/(?P<user_id>[0-9]+)/add_food/(?P<item_id>[0-9]+)/add_ingredient$', views.add_ingredient,
         name='add_ingredient'),
+    url(r'^profile/(?P<user_id>[0-9]+)/remove_user$', views.remove_user, name='remove_user'),
 
     url(r'^profile/(?P<user_id>[0-9]+)/objective/$', views.objective, name='objective'),
 
     # ex: /login
     url(r'^login/$', auth_views.login, {'template_name': 'app_1/login.html'}, name='login'),
     # ex: /logout
-    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout')
+
 
 
 ]

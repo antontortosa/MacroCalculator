@@ -173,12 +173,14 @@ def edit_profile(request):
     #TODO: Mostrar formulario con los campos actuales y actualizar solo los que hayan cambiado
 
 
-def remove_user(request):
-    user = get_object_or_404(Profile, pk=user_id)
-    if resquest.method == 'POST':
-        #user.profile.isActive = False
-        user.save()
-    return render(request, 'app_1/.html')
+def remove_user(request, user_id):
+    profile = get_object_or_404(Profile, pk=user_id)
+    if request.method == 'POST':
+        profile.user.is_active = False
+        profile.user.save()
+        profile.save()
+
+    return redirect('/')
 
 
 
