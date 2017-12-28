@@ -133,15 +133,38 @@ def add_ingredient(request, user_id, item_id):
 
 def history(request, user_id):
     user_history = History.objects.filter(usuario=user_id)
-    items_history = []
-    history_entry = {}
+    items_history = [] # list to be sent to the template
+    history_entry = {} # dictionary to allocate Items with the day it was added
+    macro_eaten = {} # information about the monthly intake of macronutrients
+    calories_acum = 0 # acumulator for macro_eaten
+    fat_acum = 0 # idem
+    protein_acum = 0 # idem
+    carbs_acum = 0 # idem
     for entry in user_history:
-        history_entry["ITEM"] = Item.objects.get(pk=entry.item_id)
-        history_entry["DATE"] = entry.date_consumed
-        items_history.append(history_entry)
-        history_entry = {}
-
-    context = {'items_history': items_history, 'user_id': user_id}
+        # itearate through all the items in the history of <user_id> user
+        history_entry["ITEM"] = Item.objects.get(pk=entry.item_id) # store the information in
+        history_entry["DATE"] = entry.date_consumed                 # its convinient place in dict
+        if entry.date_consumed.month == timezone.now().month and entry.date_consumed.year == timezone.now().year :  
+            # if intake was this month we add its macronutrients to the acumulators
+                calories_acum += history_entry["ITEM"].calories
+                fat_acum += history_entry["ITEM"].tot_fat
+                protein_acum += history_entry["ITEM"].tot_protein
+                carbs_acum += history_entry["ITEM"].tot_carbs
+        items_history.append(history_entry) # in any way we append to the list of history entries
+        history_entry = {}  # reset for next iteration
+        # set all entries of the monthly intake
+        macro_eaten['cal'] = calories_acum 
+        macro_eaten['carb'] = carbs_acum
+        macro_eaten['prot'] = protein_acum
+        macro_eaten['fat'] = fat_acum
+    objectives = Objective.objects.get(usuario=user_id) # save the monthly objective of the user
+    # now calculate the percentage of the intake over the objective
+    macro_eaten['cal_p'] = (calories_acum * 100 ) / objectives.calories_obj 
+    macro_eaten['carb_p'] = (carbs_acum * 100 ) / objectives.carbs_obj
+    macro_eaten['prot_p'] = (protein_acum * 100 ) / objectives.protein_obj
+    macro_eaten['fat_p'] = (fat_acum * 100 ) / objectives.fat_obj
+    # setup the context
+    context = {'items_history': items_history,'macro_eaten':macro_eaten,'user_objectives': objectives ,'user_id': user_id}
     return render(request, 'app_1/history.html', context)
 
 
