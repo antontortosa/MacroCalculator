@@ -173,6 +173,15 @@ def edit_profile(request):
     #TODO: Mostrar formulario con los campos actuales y actualizar solo los que hayan cambiado
 
 
+def remove_user(request):
+    user = get_object_or_404(Profile, pk=user_id)
+    if resquest.method == 'POST':
+        #user.profile.isActive = False
+        user.save()
+    return render(request, 'app_1/.html')
+
+
+
 def objective(request, user_id):
     profile = get_object_or_404(Profile, pk=user_id)
 
@@ -191,13 +200,16 @@ def objective(request, user_id):
                 fat = request.POST.get('fat', obj.fat_obj)
 
             else:
+                obj = Objective(usuario = profile)
                 calories = request.POST.get('calories', -1)
                 carbs = request.POST.get('carbs', -1)
                 protein = request.POST.get('protein',-1)
                 fat = request.POST.get('fat', -1)
 
-            obj = Objective(usuario = profile, calories_obj = calories,
-                                    carbs_obj = carbs, protein_obj = protein, fat_obj = fat)
+            obj.calories_obj = calories
+            obj.carbs_obj = carbs
+            obj.protein_obj = protein
+            obj.fat_obj = fat
             obj.save()
 
     context = {'profile': profile, 'objective': obj}
